@@ -1,0 +1,6 @@
+@HrAppWebApplication_HostAddress = http://localhost:5137
+
+GET {{HrAppWebApplication_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

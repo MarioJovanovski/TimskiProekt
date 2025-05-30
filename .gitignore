@@ -1,0 +1,7 @@
+# Backend
+hr-app-backend/**/bin/
+hr-app-backend/**/obj/
+hr-app-backend/**/appsettings.*.json
+
+# Ignore Visual Studio files
+.vs/
