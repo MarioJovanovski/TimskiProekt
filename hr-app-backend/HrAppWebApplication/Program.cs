@@ -21,10 +21,30 @@ builder.Services.AddDbContext<HrAppDbContext>(options =>
 
 builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
+
+builder.Services.AddScoped<IEmployeeDossierRepository, EmployeeDossierRepository>();
+builder.Services.AddScoped<IEmployeeDossierService, EmployeeDossierService>();
+
+builder.Services.AddScoped<IAssetRepository, AssetRepository>();
+builder.Services.AddScoped<IAssetService, AssetService>();
+
+builder.Services.AddScoped<ILeaveRequestRepository, LeaveRequestRepository>();
+builder.Services.AddScoped<ILeaveRequestService, LeaveRequestService>();
+
+// Add these to your service configuration
+builder.Services.AddScoped<IDocumentTemplateRepository, DocumentTemplateRepository>();
+builder.Services.AddScoped<IDocumentTemplateService, DocumentTemplateService>();
+
+// Add these to your service configuration
+builder.Services.AddScoped<IGeneratedDocumentRepository, GeneratedDocumentRepository>();
+builder.Services.AddScoped<IGeneratedDocumentService, GeneratedDocumentService>();
+
 
 
 builder.Services.AddControllers()
