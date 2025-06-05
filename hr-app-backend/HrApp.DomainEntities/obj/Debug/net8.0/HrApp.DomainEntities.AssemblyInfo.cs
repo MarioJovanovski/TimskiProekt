@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("HrApp.DomainEntities")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+deb11f8d1f98f1f17c9b5474855f0bfe9adf70ec")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d941d27cd3e9e62a7ad8847e2c4f4d6109874256")]
 [assembly: System.Reflection.AssemblyProductAttribute("HrApp.DomainEntities")]
 [assembly: System.Reflection.AssemblyTitleAttribute("HrApp.DomainEntities")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

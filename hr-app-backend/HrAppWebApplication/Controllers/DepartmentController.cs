@@ -1,6 +1,7 @@
 ﻿using HrApp.DomainEntities.DTO.Request;
 using HrApp.DomainEntities.DTO.Response;
 using HrApp.Service.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HrAppWebApplication.Controllers
@@ -17,6 +18,7 @@ namespace HrAppWebApplication.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<DepartmentResponseDto>>> GetAll()
         {
             return Ok(await _service.GetAllAsync());

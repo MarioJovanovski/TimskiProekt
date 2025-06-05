@@ -2,17 +2,21 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using HrApp.DomainEntities.Identity; // Add this using statement
+                                     // Add this using statement for ApplicationUser (created in previous step)
 
 namespace HrAppWebApplication
 {
-    public class HrAppDbContext : DbContext
+    // IMPORTANT CHANGE: Inherit from IdentityDbContext<ApplicationUser>
+    public class HrAppDbContext : IdentityDbContext<ApplicationUser>
     {
         public HrAppDbContext(DbContextOptions<HrAppDbContext> options)
             : base(options)
         {
         }
 
-        // Existing DbSets
+        // --- Existing DbSets (keep these as they are) ---
         public DbSet<Department> Departments { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<EmployeeDossier> EmployeeDossiers { get; set; }
@@ -21,12 +25,32 @@ namespace HrAppWebApplication
         public DbSet<DocumentTemplate> DocumentTemplates { get; set; }
         public DbSet<GeneratedDocument> GeneratedDocuments { get; set; }
 
-        // Add User DbSet
-        public DbSet<User> Users { get; set; }
+        // --- REMOVE THE OLD DbSet<User>! ---
+        // public DbSet<User> Users { get; set; } // <--- DELETE THIS LINE
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Department configuration (existing)
+            // --- CRUCIAL: Call the base method FIRST! ---
+            // This configures all the AspNet* Identity tables.
+            base.OnModelCreating(modelBuilder);
+
+            // --- REMOVE THE OLD User configuration block! ---
+            // modelBuilder.Entity<User>(entity =>
+            // {
+            //     entity.HasKey(u => u.Id);
+            //     entity.Property(u => u.Email).IsRequired().HasMaxLength(255);
+            //     entity.HasIndex(u => u.Email).IsUnique();
+            //     entity.Property(u => u.PasswordHash).IsRequired();
+            //     entity.Property(u => u.CreatedAt).HasDefaultValueSql("GETDATE()");
+            //     entity.HasOne(u => u.Employee)
+            //         .WithOne()
+            //         .HasForeignKey<User>(u => u.EmployeeID)
+            //         .OnDelete(DeleteBehavior.Cascade);
+            //     entity.HasIndex(u => u.EmployeeID).IsUnique();
+            // }); // <--- DELETE THIS ENTIRE BLOCK
+
+            // --- Your existing OnModelCreating configurations (keep these as they are) ---
+            // Department configuration
             modelBuilder.Entity<Department>(entity =>
             {
                 entity.HasKey(d => d.DepartmentID);
@@ -34,7 +58,7 @@ namespace HrAppWebApplication
                 entity.Property(d => d.Description).HasMaxLength(500);
             });
 
-            // Employee configuration (existing)
+            // Employee configuration
             modelBuilder.Entity<Employee>(entity =>
             {
                 entity.HasKey(e => e.EmployeeID);
@@ -62,26 +86,7 @@ namespace HrAppWebApplication
                     .OnDelete(DeleteBehavior.Restrict);
             });
 
-            // User configuration (new)
-            modelBuilder.Entity<User>(entity =>
-            {
-                entity.HasKey(u => u.Id);
-                entity.Property(u => u.Email).IsRequired().HasMaxLength(255);
-                entity.HasIndex(u => u.Email).IsUnique();
-                entity.Property(u => u.PasswordHash).IsRequired();
-                entity.Property(u => u.CreatedAt).HasDefaultValueSql("GETDATE()");
-
-                // Relationship with Employee
-                entity.HasOne(u => u.Employee)
-                    .WithOne()
-                    .HasForeignKey<User>(u => u.EmployeeID)
-                    .OnDelete(DeleteBehavior.Cascade);
-
-                // Ensure EmployeeID is unique
-                entity.HasIndex(u => u.EmployeeID).IsUnique();
-            });
-
-            // EmployeeDossier configuration (existing)
+            // EmployeeDossier configuration
             modelBuilder.Entity<EmployeeDossier>(entity =>
             {
                 entity.HasKey(d => d.DossierID);
@@ -100,7 +105,7 @@ namespace HrAppWebApplication
                     .HasConversion<string>();
             });
 
-            // LeaveRequest configuration (existing)
+            // LeaveRequest configuration
             modelBuilder.Entity<LeaveRequest>(entity =>
             {
                 entity.HasKey(l => l.RequestID);
@@ -126,7 +131,7 @@ namespace HrAppWebApplication
                     .HasDefaultValueSql("GETDATE()");
             });
 
-            // Asset configuration (existing)
+            // Asset configuration
             modelBuilder.Entity<Asset>(entity =>
             {
                 entity.HasKey(a => a.AssetID);
@@ -145,7 +150,7 @@ namespace HrAppWebApplication
                 entity.Property(a => a.IsActive).HasDefaultValue(true);
             });
 
-            // DocumentTemplate configuration (existing)
+            // DocumentTemplate configuration
             modelBuilder.Entity<DocumentTemplate>(entity =>
             {
                 entity.HasKey(t => t.TemplateID);
@@ -159,7 +164,7 @@ namespace HrAppWebApplication
                     .HasMaxLength(50);
             });
 
-            // GeneratedDocument configuration (existing)
+            // GeneratedDocument configuration
             modelBuilder.Entity<GeneratedDocument>(entity =>
             {
                 entity.HasKey(g => g.DocumentID);
@@ -178,8 +183,6 @@ namespace HrAppWebApplication
                 entity.Property(g => g.GeneratedDate).HasDefaultValueSql("GETDATE()");
                 entity.Property(g => g.AssetIDs).HasColumnType("NVARCHAR(MAX)").IsRequired(false);
             });
-
-            base.OnModelCreating(modelBuilder);
         }
     }
 }
