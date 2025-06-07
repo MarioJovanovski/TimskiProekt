@@ -308,3 +308,4 @@ C:\Users\Mario\Documents\TimskiProekt\hr-app-backend\HrAppWebApplication\bin\Deb
 C:\Users\Mario\Documents\TimskiProekt\hr-app-backend\HrAppWebApplication\bin\Debug\net8.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
 C:\Users\Mario\Documents\TimskiProekt\hr-app-backend\HrAppWebApplication\bin\Debug\net8.0\Microsoft.Extensions.Identity.Core.dll
 C:\Users\Mario\Documents\TimskiProekt\hr-app-backend\HrAppWebApplication\bin\Debug\net8.0\Microsoft.Extensions.Identity.Stores.dll
+C:\Users\Mario\Documents\TimskiProekt\hr-app-backend\HrAppWebApplication\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
