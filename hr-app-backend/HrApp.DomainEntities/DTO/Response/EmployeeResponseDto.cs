@@ -20,5 +20,12 @@ namespace HrApp.DomainEntities.DTO.Response
         public string ManagerName { get; set; }
         public Guid? MentorID { get; set; }
         public string MentorName { get; set; }
+        public string ApplicationUserId { get; set; }
+
+        public List<AssetResponseDto> Assets { get; set; } = [];
+        public List<LeaveRequestResponseDto> LeaveRequests { get; set; } = [];
+        public List<GeneratedDocumentResponseDto> GeneratedDocuments{ get; set; } = [];
+
+
     }
 }

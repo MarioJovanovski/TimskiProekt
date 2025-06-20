@@ -34,6 +34,11 @@ namespace HrAppWebApplication
             // This configures all the AspNet* Identity tables.
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<Employee>()
+               .HasOne(e => e.ApplicationUser)
+               .WithOne(u => u.Employee)
+               .HasForeignKey<Employee>(e => e.ApplicationUserId);
+
             // --- REMOVE THE OLD User configuration block! ---
             // modelBuilder.Entity<User>(entity =>
             // {
@@ -62,12 +67,12 @@ namespace HrAppWebApplication
             modelBuilder.Entity<Employee>(entity =>
             {
                 entity.HasKey(e => e.EmployeeID);
-                entity.Property(e => e.FirstName).IsRequired().HasMaxLength(50);
-                entity.Property(e => e.LastName).IsRequired().HasMaxLength(50);
-                entity.Property(e => e.Email).IsRequired().HasMaxLength(255);
+                entity.Property(e => e.FirstName).HasMaxLength(50);
+                entity.Property(e => e.LastName).HasMaxLength(50);
+                entity.Property(e => e.Email).HasMaxLength(255);
                 entity.HasIndex(e => e.Email).IsUnique();
-                entity.Property(e => e.PasswordHash).IsRequired().HasMaxLength(255);
-                entity.Property(e => e.HireDate).IsRequired();
+             
+                entity.Property(e => e.HireDate);
                 entity.Property(e => e.Position).HasMaxLength(100);
 
                 entity.HasOne(e => e.Department)

@@ -34,6 +34,9 @@ namespace HrApp.Repository.Implementation
                 .Include(e => e.Department)
                 .Include(e => e.Manager)
                 .Include(e => e.Mentor)
+                .Include(e => e.Assets)
+                .Include(e => e.GeneratedDocuments)
+                .Include(e => e.LeaveRequests)
                 .FirstOrDefaultAsync(e => e.EmployeeID == id);
         }
 

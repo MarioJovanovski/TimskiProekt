@@ -26,14 +26,15 @@ namespace HrApp.Service.Implementation
             return employees.Select(e => new EmployeeResponseDto
             {
                 EmployeeID = e.EmployeeID,
-                FirstName = e.FirstName,
-                LastName = e.LastName,
-                Email = e.Email,
+                ApplicationUserId = e.ApplicationUserId,
+                FirstName = e?.FirstName,
+                LastName = e?.LastName,
+                Email = e?.Email,
                 HireDate = e.HireDate,
-                Position = e.Position,
-                DepartmentID = e.DepartmentID,
-                DepartmentName = e.Department?.Name,
-                ManagerID = e.ManagerID,
+                Position = e?.Position,
+                //DepartmentID = e.DepartmentID?,
+                DepartmentName = e?.Department?.Name ?? string.Empty,
+                //ManagerID = e.ManagerID,
                 ManagerName = e.Manager != null ? $"{e.Manager.FirstName} {e.Manager.LastName}" : null,
                 MentorID = e.MentorID,
                 MentorName = e.Mentor != null ? $"{e.Mentor.FirstName} {e.Mentor.LastName}" : null
@@ -58,18 +59,66 @@ namespace HrApp.Service.Implementation
                 ManagerID = e.ManagerID,
                 ManagerName = e.Manager != null ? $"{e.Manager.FirstName} {e.Manager.LastName}" : null,
                 MentorID = e.MentorID,
-                MentorName = e.Mentor != null ? $"{e.Mentor.FirstName} {e.Mentor.LastName}" : null
+                MentorName = e.Mentor != null ? $"{e.Mentor.FirstName} {e.Mentor.LastName}" : null,
+                ApplicationUserId = e.ApplicationUserId,
+
+                Assets = e.Assets?.Select(a => new AssetResponseDto
+                {
+                    AssetID = a.AssetID,
+                    EmployeeID = a.EmployeeID,
+                    EmployeeName = $"{e.FirstName} {e.LastName}",
+                    Name = a.Name,
+                    Description = a.Description,
+                    SerialNumber = a.SerialNumber,
+                    AssignmentDate = a.AssignmentDate,
+                    IsActive = a.IsActive
+                }).ToList() ?? [],
+
+                LeaveRequests = e.LeaveRequests?.Select(x => new LeaveRequestResponseDto
+                {
+                    RequestID = x.RequestID,
+                    EmployeeID = x.EmployeeID,
+                    StartDate = x.StartDate,
+                    EndDate = x.EndDate,
+                    LeaveType = x.LeaveType,
+                    Status = x.Status,
+                    CreatedAt = x.CreatedAt
+
+                }).ToList() ?? [],
+                // Koga ke se sredat dokumentite togash ke go stavime kodov
+                //GeneratedDocuments = e.GeneratedDocuments?.Select(g => new GeneratedDocumentResponseDto
+                //{
+                //    DocumentID = g.DocumentID,
+                //    Content = g.Content,
+                //    GeneratedDate = g.GeneratedDate,
+                //    TemplateID = g.TemplateID,
+                //    TemplateName = g.DocumentTemplate?.TemplateName ?? "",
+                //    Assets = e.Assets?.Select(a => new AssetResponseDto
+                //    {
+                //        AssetID = a.AssetID,
+                //        EmployeeID = a.EmployeeID,
+                //        EmployeeName = $"{e.FirstName} {e.LastName}",
+                //        Name = a.Name,
+                //        Description = a.Description,
+                //        SerialNumber = a.SerialNumber,
+                //        AssignmentDate = a.AssignmentDate,
+                //        IsActive = a.IsActive
+                //    }).ToList() ?? new List<AssetResponseDto>(),
+                //}).ToList() ?? new List<GeneratedDocumentResponseDto>()
+
             };
         }
 
-        public async Task<EmployeeResponseDto> AddAsync(EmployeeRequestDto dto)
+        public async Task<EmployeeResponseDto> AddAsync(EmployeeRequestDto dto) //drug dto za ova
+
         {
             var employee = new Employee
             {
+                ApplicationUserId = dto.ApplicationUserId,
                 FirstName = dto.FirstName,
                 LastName = dto.LastName,
                 Email = dto.Email,
-                PasswordHash = dto.PasswordHash,
+                //PasswordHash = dto.PasswordHash,
                 HireDate = dto.HireDate,
                 Position = dto.Position,
                 DepartmentID = dto.DepartmentID,
@@ -81,28 +130,44 @@ namespace HrApp.Service.Implementation
             return await GetByIdAsync(created.EmployeeID);
         }
 
-        public async Task UpdateAsync(Guid id, EmployeeRequestDto dto)
+        public async Task UpdateAsync(Guid id, UpdateEmployeeRequestDto dto)
         {
-            var employee = new Employee
-            {
-                EmployeeID = id,
-                FirstName = dto.FirstName,
-                LastName = dto.LastName,
-                Email = dto.Email,
-                PasswordHash = dto.PasswordHash,
-                HireDate = dto.HireDate,
-                Position = dto.Position,
-                DepartmentID = dto.DepartmentID,
-                ManagerID = dto.ManagerID,
-                MentorID = dto.MentorID
-            };
 
-            await _repository.UpdateAsync(employee);
+            var existingEmployee = await _repository.GetByIdAsync(id);
+
+            //var employee = new Employee
+            //{
+
+            //    EmployeeID = id,
+            //    FirstName = dto.FirstName,
+            //    LastName = dto.LastName,
+            //    Email = dto.Email,
+            //    //PasswordHash = dto.PasswordHash,
+            //    HireDate = dto.HireDate,
+            //    Position = dto?.Position,
+            //    DepartmentID = dto?.DepartmentID,
+            //    ManagerID = dto?.ManagerID,
+            //    MentorID = dto?.MentorID,
+            //    ApplicationUserId = existingEmployee.ApplicationUserId
+            //};
+            
+            existingEmployee.FirstName = dto.FirstName;
+            existingEmployee.LastName = dto.LastName;
+            existingEmployee.Email = dto.Email;
+            existingEmployee.HireDate = dto.HireDate;
+            existingEmployee.Position = dto.Position;
+            existingEmployee.DepartmentID = dto.DepartmentID;
+            existingEmployee.ManagerID = dto.ManagerID;
+            existingEmployee.MentorID = dto.MentorID;
+
+            await _repository.UpdateAsync(existingEmployee);
         }
 
         public async Task DeleteAsync(Guid id)
         {
             await _repository.DeleteAsync(id);
         }
+
+      
     }
 }

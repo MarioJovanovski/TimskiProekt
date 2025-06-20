@@ -110,7 +110,7 @@ namespace HrApp.Service.Implementation
                     ? document.Content.Substring(0, 100) + "..."
                     : document.Content,
                 GeneratedDate = document.GeneratedDate,
-                AssetIDs = assetIds,
+                //AssetIDs = assetIds,
                 DocumentType = document.DocumentTemplate?.TemplateType
             };
         }

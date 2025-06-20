@@ -555,7 +555,7 @@
       },
       {
         "Name": "dto",
-        "Type": "HrApp.DomainEntities.DTO.Request.EmployeeRequestDto",
+        "Type": "HrApp.DomainEntities.DTO.Request.UpdateEmployeeRequestDto",
         "IsRequired": true
       }
     ],

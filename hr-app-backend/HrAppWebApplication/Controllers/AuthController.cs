@@ -8,6 +8,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using HrApp.DomainEntities.DTO.Request;
+using HrApp.Service.Interface;
 
 namespace HrAppWebApplication.Controllers
 {
@@ -18,15 +19,18 @@ namespace HrAppWebApplication.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IConfiguration _configuration;
+        private readonly IEmployeeService _employeeService;
 
         public AuthController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            IEmployeeService employeeService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _configuration = configuration;
+            _employeeService = employeeService;
         }
 
         // --- User Registration Endpoint ---
@@ -35,21 +39,45 @@ namespace HrAppWebApplication.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState); // Returns validation errors
+                return BadRequest(ModelState);
             }
 
-            var user = new ApplicationUser { UserName = model.Email, Email = model.Email, EmailConfirmed = true }; // Set EmailConfirmed to true for quick testing, otherwise implement email confirmation flow
+            var user = new ApplicationUser
+            {
+                UserName = model.Email,
+                Email = model.Email,
+                EmailConfirmed = true
+            };
+
             var result = await _userManager.CreateAsync(user, model.Password);
 
             if (result.Succeeded)
             {
-                // Optional: Assign a default role to new users, e.g., "Employee"
-                await _userManager.AddToRoleAsync(user, "Employee"); // Requires 'Employee' role to exist in AspNetRoles table
+                await _userManager.AddToRoleAsync(user, "Employee");
 
-                return Ok(new { Message = "User registered successfully!" });
+                // Create the Employee record linked to this ApplicationUser
+                var employeeDto = new EmployeeRequestDto
+                {
+                    // Fill in Employee fields here, at least the ApplicationUserId
+                    ApplicationUserId = user.Id,
+                    Email = user.Email,
+                    FirstName = user.UserName,
+                    LastName = "",
+                    PasswordHash = "",
+
+                    // You can add other defaults or data from `model` if you have it
+                };
+
+                var createdEmployee = await _employeeService.AddAsync(employeeDto);
+
+                return Ok(new
+                {
+                    Message = "User and employee created successfully!",
+                    UserId = user.Id,
+                    EmployeeId = createdEmployee.EmployeeID
+                });
             }
 
-            // If registration failed, return errors
             return BadRequest(result.Errors);
         }
 

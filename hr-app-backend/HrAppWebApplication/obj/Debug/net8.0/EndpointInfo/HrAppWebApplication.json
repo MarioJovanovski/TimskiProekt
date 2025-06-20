@@ -1013,17 +1013,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/EmployeeRequestDto"
+                "$ref": "#/components/schemas/UpdateEmployeeRequestDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/EmployeeRequestDto"
+                "$ref": "#/components/schemas/UpdateEmployeeRequestDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/EmployeeRequestDto"
+                "$ref": "#/components/schemas/UpdateEmployeeRequestDto"
               }
             }
           }
@@ -2407,6 +2407,10 @@
             "type": "string",
             "format": "uuid",
             "nullable": true
+          },
+          "applicationUserId": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -2463,6 +2467,31 @@
           },
           "mentorName": {
             "type": "string",
+            "nullable": true
+          },
+          "applicationUserId": {
+            "type": "string",
+            "nullable": true
+          },
+          "assets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AssetResponseDto"
+            },
+            "nullable": true
+          },
+          "leaveRequests": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LeaveRequestResponseDto"
+            },
+            "nullable": true
+          },
+          "generatedDocuments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GeneratedDocumentResponseDto"
+            },
             "nullable": true
           }
         },
@@ -2535,15 +2564,18 @@
             "type": "string",
             "format": "date-time"
           },
-          "assetIDs": {
+          "assets": {
             "type": "array",
             "items": {
-              "type": "string",
-              "format": "uuid"
+              "$ref": "#/components/schemas/AssetResponseDto"
             },
             "nullable": true
           },
           "documentType": {
+            "type": "string",
+            "nullable": true
+          },
+          "content": {
             "type": "string",
             "nullable": true
           }
@@ -2657,6 +2689,47 @@
             "maxLength": 100,
             "minLength": 6,
             "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateEmployeeRequestDto": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "hireDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "position": {
+            "type": "string",
+            "nullable": true
+          },
+          "departmentID": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "managerID": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "mentorID": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
           }
         },
         "additionalProperties": false

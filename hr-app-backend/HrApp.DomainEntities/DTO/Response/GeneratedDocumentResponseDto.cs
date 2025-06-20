@@ -15,12 +15,12 @@ namespace HrApp.DomainEntities.DTO.Response
         public string TemplateName { get; set; }
         public string ContentPreview { get; set; } // First 100 chars
         public DateTime GeneratedDate { get; set; }
-        public List<Guid> AssetIDs { get; set; }
+        public List<AssetResponseDto> Assets { get; set; }
         public string DocumentType { get; set; }
+        public string Content { get; set; }
 
-        public GeneratedDocumentResponseDto()
-        {
-            AssetIDs = new List<Guid>();
-        }
+       
+        
+        
     }
 }

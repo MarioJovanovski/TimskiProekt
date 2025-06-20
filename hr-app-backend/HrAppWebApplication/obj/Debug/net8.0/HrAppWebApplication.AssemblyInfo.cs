@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("HrAppWebApplication")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+641771b8ed35c2da9cc2ac82d6ab8d81a9bde99e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+15b8e831c249d55d69217265412887f2be1c6f11")]
 [assembly: System.Reflection.AssemblyProductAttribute("HrAppWebApplication")]
 [assembly: System.Reflection.AssemblyTitleAttribute("HrAppWebApplication")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

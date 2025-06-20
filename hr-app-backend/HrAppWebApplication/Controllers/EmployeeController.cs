@@ -38,7 +38,7 @@ namespace HrAppWebApplication.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Edit(Guid id, [FromBody] EmployeeRequestDto dto)
+        public async Task<IActionResult> Edit(Guid id, [FromBody] UpdateEmployeeRequestDto dto)
         {
             await _service.UpdateAsync(id, dto);
             return NoContent();
